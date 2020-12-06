@@ -66,19 +66,20 @@ int main(int argc, char **argv)
     if (iResult != HYPER_SUCCESS)
     {
         puts("[-] HyperRecieveFile failed");
-        free(lpBuffer);
+        HyperMemFree(lpBuffer);
         return HYPER_FAILED;
     }
     else
         puts("[+] File recieved");
 
-    FILE *pFile = fopen("testresult.png", "wb");
-    if (pFile)
+    iResult = HyperWriteFile("./testresult.jpg", lpBuffer, ulTotalSize);
+    if (iResult == HYPER_FAILED)
     {
-        fwrite(lpBuffer, ulTotalSize, 1, pFile);
-        fclose(pFile);
+        puts("[-] HyperWriteFile failed");
+        HyperMemFree(lpBuffer);
+        return HYPER_FAILED;
     }
-    free(lpBuffer);
+    HyperMemFree(lpBuffer);
 
     puts("[+] File written");
 
