@@ -14,6 +14,44 @@ void usage(void)
     puts("Usage: hyper <IP ADDRESS> <PORT>");
 }
 
+void server_handler(SOCKET sockServer)
+{
+    HYPERSTATUS iResult = 0;
+
+    iResult = HyperSendCommand(sockServer, "SEND test.png");
+    if (iResult != HYPER_SUCCESS)
+    {
+        puts("[-] HyperSendCommand failed");
+        return;
+    }
+    else
+        puts("[+] Command sent");
+
+    HYPERFILE lpBuffer = NULL;
+    unsigned long ulTotalSize = 0;
+    puts("[+] Recieving file...");
+    iResult = HyperRecieveFile(sockServer, &lpBuffer, &ulTotalSize);
+    if (iResult != HYPER_SUCCESS)
+    {
+        puts("[-] HyperRecieveFile failed");
+        HyperMemFree(lpBuffer);
+        return;
+    }
+    else
+        puts("[+] File recieved");
+
+    iResult = HyperWriteFile("./testresult.jpg", lpBuffer, ulTotalSize);
+    if (iResult == HYPER_FAILED)
+    {
+        puts("[-] HyperWriteFile failed");
+        HyperMemFree(lpBuffer);
+        return;
+    }
+    HyperMemFree(lpBuffer);
+
+    puts("[+] File written");
+}
+
 int main(int argc, char **argv)
 {
     HYPERSTATUS iResult = 0;
@@ -40,48 +78,23 @@ int main(int argc, char **argv)
     }
     else
         puts("[+] Hyper NetAPI Initialized");
-
-    iResult = HyperConnectServer(&sockServer, cpServerIP, usPort);
-    if (iResult != HYPER_SUCCESS)
+    
+    for (int i = 0; i < MAX_CONNECTION_TRIES; i++)
     {
-        puts("[-] HyperConnectServer failed");
-        return HYPER_FAILED;
-    }
-    else
-        puts("[+] Connected to server");
+        iResult = HyperConnectServer(&sockServer, cpServerIP, usPort);
+        if (iResult != HYPER_SUCCESS)
+        {
+            puts("[-] HyperConnectServer failed, retrying...");
+        }
+        else
+        {
+            puts("[+] Connected to server");
+            server_handler(sockServer);
+            break;
+        }
 
-    iResult = HyperSendCommand(sockServer, "SEND");
-    if (iResult != HYPER_SUCCESS)
-    {
-        puts("[-] HyperSendCommand failed");
-        return HYPER_FAILED;
+        sleep(CONNECTION_TIMEOUT);
     }
-    else
-        puts("[+] Command sent");
-
-    HYPERFILE lpBuffer = NULL;
-    unsigned long ulTotalSize = 0;
-    puts("[+] Recieving file...");
-    iResult = HyperRecieveFile(sockServer, &lpBuffer, &ulTotalSize);
-    if (iResult != HYPER_SUCCESS)
-    {
-        puts("[-] HyperRecieveFile failed");
-        HyperMemFree(lpBuffer);
-        return HYPER_FAILED;
-    }
-    else
-        puts("[+] File recieved");
-
-    iResult = HyperWriteFile("./testresult.jpg", lpBuffer, ulTotalSize);
-    if (iResult == HYPER_FAILED)
-    {
-        puts("[-] HyperWriteFile failed");
-        HyperMemFree(lpBuffer);
-        return HYPER_FAILED;
-    }
-    HyperMemFree(lpBuffer);
-
-    puts("[+] File written");
 
     HyperCloseSocket(sockServer);
     HyperSocketCleanup();

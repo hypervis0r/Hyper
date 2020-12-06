@@ -33,7 +33,7 @@ HyperNetworkInit(void);
 HYPERSTATUS
 HyperCloseSocket(
     SOCKET              sock
-    );
+);
 
 HYPERSTATUS 
 HyperSocketCleanup(void);
@@ -41,37 +41,38 @@ HyperSocketCleanup(void);
 HYPERSTATUS
 HyperSocket(
     SOCKET              *sock
-    );
+);
 
 HYPERSTATUS
 HyperConnectServer(
     SOCKET              *sock, 
     const char          *cpServerIP, 
     const unsigned short usPort
-    );
+);
 
 HYPERSTATUS
 HyperStartServer(
     SOCKET              *sock, 
     const unsigned short usPort
-    );
+);
 
 HYPERSTATUS
 HyperServerListen(
     const SOCKET        sockServer, 
     SOCKET              *sockClient
-    );
+);
 
 HYPERSTATUS
 HyperRecieveCommand(
     const SOCKET        sock, 
-    char                **cpCommand
-    );
+    char                **cpCommand,
+    size_t              stMaxCommandLength
+);
 
 HYPERSTATUS
 HyperSendCommand(
     const SOCKET        sock, 
     const char          *cpCommand
-    );
+);
 
 #endif
