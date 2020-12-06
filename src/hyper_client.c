@@ -1,5 +1,4 @@
-#include "hyper.h"
-#include <stdio.h>
+#include "hyper_client.h"
 
 void usage(void)
 {
