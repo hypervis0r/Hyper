@@ -5,7 +5,7 @@ INCLUDEDIR += -Iinclude/
 INCLUDEDIR += -I$(LIBDIR)include/
 
 CC := gcc
-CFLAGS := $(INCLUDEDIR) -pedantic -Wall -Wextra -Werror -Wno-misleading-indentation
+CFLAGS := $(INCLUDEDIR) -pedantic -Wall -Wextra -Werror -Wno-misleading-indentation -Wno-unused-parameter
 
 OBJS := hyper_client.o 
 

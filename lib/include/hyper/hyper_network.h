@@ -1,6 +1,8 @@
 #ifndef _NETWORK_H
 #define _NETWORK_H
 
+#define CONNECTION_CLOSED   0
+
 #ifdef _WIN32
     #define _WINSOCK_DEPRECATED_NO_WARNINGS // Make WinSock STFU
     #include <winsock2.h> 
@@ -65,7 +67,7 @@ HyperServerListen(
 HYPERSTATUS
 HyperRecieveCommand(
     const SOCKET        sock, 
-    char                **cpCommand,
+    char                *cpCommand,
     size_t              stMaxCommandLength
 );
 
@@ -73,6 +75,18 @@ HYPERSTATUS
 HyperSendCommand(
     const SOCKET        sock, 
     const char          *cpCommand
+);
+
+HYPERSTATUS
+HyperSendStatus(
+    const SOCKET         sock,
+    const unsigned short status
+);
+
+HYPERSTATUS
+HyperRecieveStatus(
+    const SOCKET        sock,
+    unsigned short      *status
 );
 
 #endif
