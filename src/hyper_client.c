@@ -123,7 +123,7 @@ get_file(
     else
         puts("[+] Command sent");
     
-    iResult = HyperRecieveStatus(sock, &server_status);
+    iResult = HyperReceiveStatus(sock, &server_status);
     if (iResult != HYPER_SUCCESS)
     {
         puts("[-] HyperRecieveStatus failed");
@@ -142,7 +142,7 @@ get_file(
     HYPERFILE lpBuffer = NULL;
     unsigned long ulTotalSize = 0;
     puts("[+] Recieving file...");
-    iResult = HyperRecieveFile(sock, &lpBuffer, &ulTotalSize);
+    iResult = HyperReceiveFile(sock, &lpBuffer, &ulTotalSize);
     if (iResult != HYPER_SUCCESS)
     {
         puts("[-] HyperRecieveFile failed");

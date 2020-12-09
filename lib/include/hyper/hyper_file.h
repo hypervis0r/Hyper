@@ -69,7 +69,7 @@ HyperWriteFile(
 );
 
 HYPERSTATUS 
-HyperRecieveFile(
+HyperReceiveFile(
     const SOCKET        sockServer, 
     HYPERFILE           *lpBuffer, 
     unsigned long       *ulSize
