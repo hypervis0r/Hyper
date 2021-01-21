@@ -181,7 +181,24 @@ list_dir(
     const char          **argv,
     const size_t        argc)
 {
-    return;
+    char buffer[4096] = { 0 };
+    char listBuffer[4096] = { 0 };
+    unsigned short status = 0;
+
+    strncat(buffer, "LIST ", sizeof(buffer)-1);
+    
+    if (argc > 1)
+        strncat(buffer, argv[1], sizeof(buffer)-strlen(buffer)-1);
+    else
+        strncat(buffer, ".", sizeof(buffer)-strlen(buffer)-1);
+
+    HyperSendCommand(sock, buffer);
+
+    HyperReceiveStatus(sock, &status);
+    printf("[?] status code %du\n", status);
+
+    HyperReceiveCommand(sock, listBuffer, sizeof(listBuffer));
+    puts(listBuffer);
 }
 
 void server_handler(SOCKET sockServer)

@@ -40,7 +40,7 @@ typedef struct _COMMAND
     FUNCPTR             execute;
 } COMMAND, * PCOMMAND;
 
-COMMAND command_list[] = {
+COMMAND command_list[3] = {
     {"get", &get_file},
     {"ls", &list_dir},
     {"quit", &client_quit}
