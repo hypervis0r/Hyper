@@ -79,7 +79,7 @@ command_handler(
     if (argv == NULL)
         return HYPER_FAILED;
 
-    for(unsigned int i = 0; i < sizeof(command_list); i++)
+    for(unsigned int i = 0; i < numCommands; i++)
     {
         if (strcmp(command_list[i].command, argv[0]) == 0)
         {
@@ -101,8 +101,8 @@ get_file(
 {
     HYPERSTATUS iResult = 0;
     unsigned short server_status = 0;
-    
-    if (argc < 3)
+
+    if (argc < 2)
     {
         puts("Usage: get <source> <destination>");
         return;
@@ -120,8 +120,6 @@ get_file(
         puts("[-] HyperSendCommand failed");
         return;
     }
-    else
-        puts("[+] Command sent");
     
     iResult = HyperReceiveStatus(sock, &server_status);
     if (iResult != HYPER_SUCCESS)
@@ -149,8 +147,6 @@ get_file(
         HyperMemFree(lpBuffer);
         return;
     }
-    else
-        puts("[+] File recieved");
 
     iResult = HyperWriteFile(argv[2], lpBuffer, ulTotalSize);
     if (iResult == HYPER_FAILED)

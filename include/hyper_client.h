@@ -45,3 +45,4 @@ COMMAND command_list[3] = {
     {"ls", &list_dir},
     {"quit", &client_quit}
 };
+unsigned long numCommands = 3;
