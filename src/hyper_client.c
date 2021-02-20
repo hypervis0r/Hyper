@@ -76,7 +76,7 @@ command_handler(
 
     size_t argc = 0;
     char** argv = GetArgs(command, ' ', &argc);
-    if (argv == NULL)
+    if (argv == NULL || argv[0] == NULL)
         return HYPER_FAILED;
 
     for(unsigned int i = 0; i < numCommands; i++)
